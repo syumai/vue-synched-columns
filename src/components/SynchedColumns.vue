@@ -1,5 +1,5 @@
 <template>
-  <div class="synched-columns" :style="styleObject" @resize="resize">
+  <div class="synched-columns" :style="styleObject">
       <column class="first">
           <div v-for="n in 10">{{ n }}</div>
       </column>
@@ -16,7 +16,7 @@
 import Vue from 'vue';
 
 const Column = Vue.component('column', {
-  template: '<div :class="classList" :style="styleObject" @resize="resize"><slot></slot></div>',
+  template: '<div :class="classList" :style="styleObject"><slot></slot></div>',
   data() {
     return {
       styleObject: { top: '0' },
@@ -47,10 +47,12 @@ const Column = Vue.component('column', {
     },
   },
   mounted() {
+    window.addEventListener('resize', this.resize);
     this.$parent.$on('syncscroll', this.syncscroll);
     this.resize();
   },
   beforeDestroy() {
+    window.removeEventListener('resize', this.resize);
     this.$parent.$off('syncscroll', this.syncscroll);
   },
 });
@@ -77,6 +79,7 @@ export default {
     },
   },
   mounted() {
+    window.addEventListener('resize', this.resize);
     window.addEventListener('scroll', this.scroll);
     this.shortestChild = this.$children.sort((a, b) => (
       a.$el.offsetHeight - b.$el.offsetHeight
@@ -86,6 +89,7 @@ export default {
     this.resize();
   },
   beforeDestroy() {
+    window.removeEventListener('resize', this.resize);
     window.removeEventListener('scroll', this.scroll);
   },
 };
