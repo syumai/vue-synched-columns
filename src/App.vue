@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
+    <h1>Vue Synched Columns</h1>
+    <div>This module synchronizes scrolls of multiple columns</div>
     <synched-columns></synched-columns>
     <br>
   </div>
