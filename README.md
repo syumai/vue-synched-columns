@@ -1,6 +1,10 @@
 # vue-synched-columns
 
-> Synchronized multiple columns element implemented in Vue.js
+Synchronized multiple columns element implemented in Vue.js
+
+## Demo
+
+https://syumai.github.io/vue-synched-columns/
 
 ## Build Setup
 
