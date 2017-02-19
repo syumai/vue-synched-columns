@@ -4,6 +4,8 @@ Synchronized multiple columns element implemented in Vue.js
 
 ## Demo
 
+![Example](https://github.com/syumai/vue-synched-columns/blob/master/images/example.gif)
+
 https://syumai.github.io/vue-synched-columns/
 
 ## Build Setup
