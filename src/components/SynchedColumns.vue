@@ -1,45 +1,45 @@
 <template>
-  <div class="synched-columns">
-      <main-column class="column main">
+  <div class="synched-columns" :style="styleObject" @resize="resize">
+      <column class="first">
           <div v-for="n in 10">{{ n }}</div>
-      </main-column>
-      <sub-column class="column sub first">
+      </column>
+      <column class="second">
           <div v-for="n in 10">{{ n }}</div>
-      </sub-column>
-      <sub-column class="column sub second">
+      </column>
+      <column class="third">
           <div v-for="n in 10">{{ n }}</div>
-      </sub-column>
+      </column>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 
-const MainColumn = Vue.component('main-column', {
-  template: '<div><slot></slot></div>',
-  data() {
-    return {};
-  },
-});
-
-const SubColumn = Vue.component('sub-column', {
-  template: '<div :style="styleObject"><slot></slot></div>',
+const Column = Vue.component('column', {
+  template: '<div :class="classList" :style="styleObject" @resize="resize"><slot></slot></div>',
   data() {
     return {
       styleObject: { top: '0' },
+      shortest: false,
       winOffset: 0,
     };
   },
+  computed: {
+    classList() {
+      return this.shortest ? ['column', 'main'] : ['column', 'sub'];
+    },
+  },
   methods: {
     syncscroll({ top, bottom }) {
-      if (top <= 0 && bottom >= 0) {
-        const scrollSpeed = this.winOffset / this.$parent.winOffset;
-        this.styleObject.top = `${(scrollSpeed * top) - top}px`;
-        window.console.log(`top: ${this.styleObject.top}`);
-      } else if (top > 0) {
-        this.styleObject.top = '0';
-      } else if (bottom < 0) {
-        this.styleObject.top = `${-1 * (this.$el.offsetHeight - this.$parent.$el.offsetHeight)}px`;
+      if (!this.shortest) {
+        if (top <= 0 && bottom >= 0) {
+          const scrollSpeed = this.winOffset / this.$parent.winOffset;
+          this.styleObject.top = `${(scrollSpeed * top) - top}px`;
+        } else if (top > 0) {
+          this.styleObject.top = '0';
+        } else if (bottom < 0) {
+          this.styleObject.top = `${-1 * (this.$el.offsetHeight - this.$parent.$el.offsetHeight)}px`;
+        }
       }
     },
     resize() {
@@ -57,10 +57,12 @@ const SubColumn = Vue.component('sub-column', {
 
 export default {
   name: 'synched-columns',
-  components: { MainColumn, SubColumn },
+  components: { Column },
   data() {
     return {
       winOffset: 0,
+      styleObject: { height: '0px' },
+      shortestChild: null,
     };
   },
   methods: {
@@ -71,11 +73,16 @@ export default {
       this.$emit('syncscroll', { top, bottom });
     },
     resize() {
-      this.winOffset = this.$el.offsetHeight - window.innerHeight;
+      this.winOffset = this.shortestChild.$el.offsetHeight - window.innerHeight;
     },
   },
   mounted() {
     window.addEventListener('scroll', this.scroll);
+    this.shortestChild = this.$children.sort((a, b) => (
+      a.$el.offsetHeight - b.$el.offsetHeight
+    ))[0];
+    this.shortestChild.shortest = true;
+    this.styleObject.height = `${this.shortestChild.$el.offsetHeight}px`;
     this.resize();
   },
   beforeDestroy() {
@@ -98,22 +105,21 @@ export default {
     justify-content: space-around;
     color: white;
 }
-.column.main {
+.column.first {
+    position: absolute;
     height: 1500px;
     background-color: red;
 }
-.column.sub {
+.column.second {
     position: absolute;
-    top: 0;
-}
-.column.sub.first {
-    height: 2000px;
     background-color: green;
+    height: 2000px;
     left: 33%;
 }
-.column.sub.second {
-    height: 1000px;
+.column.third {
+    position: absolute;
     background-color: blue;
+    height: 1000px;
     left: 66%;
 }
 </style>
