@@ -19,7 +19,7 @@ const Column = Vue.component('column', {
   template: '<div :class="classList" :style="styleObject"><slot></slot></div>',
   data() {
     return {
-      styleObject: { top: '0' },
+      styleObject: { transform: 'translateY(0px)' },
       shortest: false,
       winOffset: 0,
     };
@@ -34,11 +34,11 @@ const Column = Vue.component('column', {
       if (!this.shortest) {
         if (top <= 0 && bottom >= 0) {
           const scrollSpeed = this.winOffset / this.$parent.winOffset;
-          this.styleObject.top = `${(scrollSpeed * top) - top}px`;
+          this.styleObject.transform = `translateY(${(scrollSpeed * top) - top}px)`;
         } else if (top > 0) {
-          this.styleObject.top = '0';
+          this.styleObject.transform = 'translateY(0px)';
         } else if (bottom < 0) {
-          this.styleObject.top = `${-1 * (this.$el.offsetHeight - this.$parent.$el.offsetHeight)}px`;
+          this.styleObject.transform = `translateY(${-1 * (this.$el.offsetHeight - this.$parent.$el.offsetHeight)}px)`;
         }
       }
     },
@@ -110,20 +110,15 @@ export default {
     color: white;
 }
 .column.first {
-    position: absolute;
     height: 1500px;
     background-color: red;
 }
 .column.second {
-    position: absolute;
     background-color: green;
     height: 2000px;
-    left: 33%;
 }
 .column.third {
-    position: absolute;
     background-color: blue;
     height: 1000px;
-    left: 66%;
 }
 </style>
