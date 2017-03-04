@@ -15,6 +15,12 @@
 <script>
 import Vue from 'vue';
 
+(() => {
+  const requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+  window.requestAnimationFrame = requestAnimationFrame;
+})();
+
 const Column = Vue.component('column', {
   template: '<div :class="classList" :style="styleObject"><slot></slot></div>',
   data() {
@@ -65,6 +71,7 @@ export default {
       winOffset: 0,
       styleObject: { height: '0px' },
       shortestChild: null,
+      request: null,
     };
   },
   methods: {
@@ -73,6 +80,7 @@ export default {
       const top = boundingClientRect.top;
       const bottom = boundingClientRect.bottom - window.innerHeight;
       this.$emit('syncscroll', { top, bottom });
+      window.requestAnimationFrame(this.scroll);
     },
     resize() {
       this.winOffset = this.shortestChild.$el.offsetHeight - window.innerHeight;
@@ -80,7 +88,7 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.resize);
-    window.addEventListener('scroll', this.scroll);
+    this.request = window.requestAnimationFrame(this.scroll);
     this.shortestChild = this.$children.sort((a, b) => (
       a.$el.offsetHeight - b.$el.offsetHeight
     ))[0];
@@ -90,7 +98,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resize);
-    window.removeEventListener('scroll', this.scroll);
+    window.cancelAnimationFrame(this.request);
   },
 };
 </script>
