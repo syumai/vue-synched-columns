@@ -1,1 +1,37 @@
-<!doctype html><html><head><meta charset=utf-8><title>vue-synched-columns</title><link href=dist/static/css/app.c4f2bb0fe8c7328f272009ef86ced3ab.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=dist/static/js/manifest.955336ddc623b42e177a.js></script><script type=text/javascript src=dist/static/js/vendor.d9fff7d9552cfee1a588.js></script><script type=text/javascript src=dist/static/js/app.e484158ddc283b583a21.js></script></body></html>
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <title>vue-synched-columns</title>
+        <style>
+            .synched-columns {
+                width: 100%;
+                height: auto;
+                display: flex;
+                position: relative;
+            }
+            .column {
+                width: 33%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                color: white;
+            }
+            .column.first {
+                height: 2000px;
+                background-color: red;
+            }
+            .column.second {
+                background-color: green;
+                height: 2500px;
+            }
+            .column.third {
+                background-color: blue;
+                height: 1500px;
+            }
+        </style>
+    <link href="dist/static/css/app.7f4647dafa90f6c8ae0c2500ac6585f3.css" rel="stylesheet"></head>
+    <body>
+        <div id=app></div>
+    <script type="text/javascript" src="dist/static/js/manifest.7b51cc00bc69c5b782a4.js"></script><script type="text/javascript" src="dist/static/js/vendor.15d4cf16458987b4ec2b.js"></script><script type="text/javascript" src="dist/static/js/app.cca69545d58e5ebfc368.js"></script></body>
+</html>
