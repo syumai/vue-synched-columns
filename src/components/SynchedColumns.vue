@@ -1,27 +1,12 @@
-<template>
-  <div class="synched-columns" :style="styleObject">
-      <column class="first">
-          <div v-for="n in 10">{{ n }}</div>
-      </column>
-      <column class="second">
-          <div v-for="n in 10">{{ n }}</div>
-      </column>
-      <column class="third">
-          <div v-for="n in 10">{{ n }}</div>
-      </column>
-  </div>
-</template>
-
 <script>
-import Vue from 'vue';
-
 (() => {
   const requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
   window.requestAnimationFrame = requestAnimationFrame;
 })();
 
-const Column = Vue.component('column', {
+const Column = {
+  name: 'column',
   template: '<div :class="classList" :style="styleObject"><slot></slot></div>',
   data() {
     return {
@@ -61,10 +46,11 @@ const Column = Vue.component('column', {
     window.removeEventListener('resize', this.resize);
     this.$parent.$off('syncscroll', this.syncscroll);
   },
-});
+};
 
-export default {
+const SynchedColumns = {
   name: 'synched-columns',
+  template: '<div class="synched-columns" :style="styleObject"><slot></slot></div>',
   components: { Column },
   data() {
     return {
@@ -101,32 +87,10 @@ export default {
     window.cancelAnimationFrame(this.request);
   },
 };
-</script>
 
-<style scoped>
-.synched-columns {
-    width: 100%;
-    height: auto;
-    display: flex;
-    position: relative;
-}
-.column {
-    width: 33%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    color: white;
-}
-.column.first {
-    height: 2000px;
-    background-color: red;
-}
-.column.second {
-    background-color: green;
-    height: 2500px;
-}
-.column.third {
-    background-color: blue;
-    height: 1500px;
-}
-</style>
+export default {
+  Column,
+  SynchedColumns,
+};
+
+</script>

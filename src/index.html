@@ -3,6 +3,33 @@
     <head>
         <meta charset=utf-8>
         <title>vue-synched-columns</title>
+        <style>
+            .synched-columns {
+                width: 100%;
+                height: auto;
+                display: flex;
+                position: relative;
+            }
+            .column {
+                width: 33%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                color: white;
+            }
+            .column.first {
+                height: 2000px;
+                background-color: red;
+            }
+            .column.second {
+                background-color: green;
+                height: 2500px;
+            }
+            .column.third {
+                background-color: blue;
+                height: 1500px;
+            }
+        </style>
     </head>
     <body>
         <div id=app></div>
