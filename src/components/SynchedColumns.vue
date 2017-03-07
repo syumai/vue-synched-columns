@@ -118,15 +118,15 @@ export default {
     color: white;
 }
 .column.first {
-    height: 1500px;
+    height: 2000px;
     background-color: red;
 }
 .column.second {
     background-color: green;
-    height: 2000px;
+    height: 2500px;
 }
 .column.third {
     background-color: blue;
-    height: 1000px;
+    height: 1500px;
 }
 </style>
